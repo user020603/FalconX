@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
-const port = 2908;
+const dotenv = require("dotenv");
+dotenv.config();
 
+const port = process.env.PORT;
 const route = require("./routes/client/index.route");
 
 // Setup view
@@ -11,9 +13,9 @@ app.set("view engine", "pug");
 route(app);
 
 app.listen(port, () => {
-    console.log("Connected Success!");
-    console.log(`App listening on port ${port}`);
-})
+  console.log("Connected Success!");
+  console.log(`App listening on port ${port}`);
+});
 
 // check process run in port and kill them
 // lsof -i : port
