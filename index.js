@@ -1,21 +1,17 @@
 const express = require("express");
 const app = express();
 const port = 2908;
-const path = require("path");
+
+const route = require("./routes/client/index.route");
 
 // Setup view
 app.set("views", "./views");
 app.set("view engine", "pug");
 
-app.get("/", (req, res) => {
-    res.render("client/pages/home/index");
-})
-
-app.get("/other", (req, res) => {
-    res.sendFile(path.join(__dirname+'/views/client/pages/home/index.html'))
-})
+route(app);
 
 app.listen(port, () => {
+    console.log("Connected Success!");
     console.log(`App listening on port ${port}`);
 })
 
