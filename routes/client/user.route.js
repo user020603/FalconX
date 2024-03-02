@@ -1,10 +1,11 @@
 const express = require("express");
-const route = express();
+const router = express.Router();
+const userValidate = require("../../validates/client/user.validate");
 
 const controller = require("../../controllers/client/user.controller");
 
-route.get("/", controller.index);
+router.get("/register", controller.register);
 
-route.get("/register", controller.register)
+router.post("/register", userValidate.registerPost, controller.registerPost);
 
-module.exports = route
+module.exports = router;
