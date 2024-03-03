@@ -13,6 +13,6 @@ router.get("/login", controller.login);
 
 router.post("/login", controller.loginPost);
 
-router.post("/refreshToken", auth.authenToken, controller.refreshToken);
+router.get("/refreshToken", controller.refreshToken);
 
 module.exports = router;

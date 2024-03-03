@@ -28,7 +28,7 @@ module.exports.registerPost = async (req, res) => {
   req.body.password = md5(req.body.password);
   const user = new User(req.body);
   await user.save();
-  // res.cookie("tokenUser", user.tokenUser);
+  res.cookie("tokenUser", user.tokenUser);
   req.flash("success", "Đăng ký tài khoản thành công!");
   res.redirect("/");
 };
@@ -72,7 +72,7 @@ module.exports.loginPost = async (req, res) => {
   // Authorization
   const data = user._id;
   const accessToken = jwt.sign({ data }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '10s',
+    expiresIn: '10m',
   });
   const refreshToken = jwt.sign({ data }, process.env.REFRESH_TOKEN_SECRET);
   await User.findOneAndUpdate(
@@ -84,7 +84,6 @@ module.exports.loginPost = async (req, res) => {
   res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
   res.json({ accessToken, refreshToken });
   // End Authorization
-  // res.redirect("/");
 };
 
 // [POST] /refreshToken
@@ -103,17 +102,16 @@ module.exports.refreshToken = async (req, res) => {
   if (!refreshToken) return res.sendStatus(401);
   const refreshTokens = user.refreshTokens;
   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
+  else console.log("Available in list")
 
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, data) => {
     console.log(err, data);
     if (err) return res.sendStatus(403);
-    const accessToken = jwt.sign(
-      { userId: user._id}, 
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "10s",
-      }
-    );
+    const dataNew = user._id;
+    const accessToken = jwt.sign({ dataNew }, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: '10s',
+    });
+    res.cookie("accessToken", accessToken, { httpOnly: true });
     res.json( {accessToken} );
   })
 }

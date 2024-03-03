@@ -8,3 +8,13 @@ Content-Type: application/json
 
 ###
 GET http://localhost:2908
+
+###
+POST http://localhost:2908/user/refreshToken
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjVlNDNmOWY0MzNiM2UwNDA0YzA4Y2M5IiwiaWF0IjoxNzA5NDc5ODgyLCJleHAiOjE3MDk0Nzk4OTJ9.Y7RfF5pnqGd33LiF4o9-_BLK5FEIQdsUBM2IJQEPl2M"
+}
+
+
