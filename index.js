@@ -31,6 +31,11 @@ app.use(express.static("public"));
 
 route(app);
 
+// [POST] /refreshToken
+app.post("/refreshToken", (req, res) => {
+  res.json(req.body);
+})
+
 app.listen(port, () => {
   console.log("Connected Success!");
   console.log(`App listening on port ${port}`);
