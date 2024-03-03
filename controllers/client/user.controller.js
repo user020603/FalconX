@@ -30,7 +30,7 @@ module.exports.registerPost = async (req, res) => {
   await user.save();
   res.cookie("tokenUser", user.tokenUser);
   req.flash("success", "Đăng ký tài khoản thành công!");
-  res.redirect("/");
+  res.redirect("/user/login");
 };
 
 // [GET] /login
@@ -72,7 +72,7 @@ module.exports.loginPost = async (req, res) => {
   // Authorization
   const data = user._id;
   const accessToken = jwt.sign({ data }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '10m',
+    expiresIn: '10s',
   });
   const refreshToken = jwt.sign({ data }, process.env.REFRESH_TOKEN_SECRET);
   await User.findOneAndUpdate(
@@ -82,7 +82,8 @@ module.exports.loginPost = async (req, res) => {
   res.cookie("tokenUser", user.tokenUser);
   res.cookie('accessToken', accessToken, { httpOnly: true, secure: true });
   res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
-  res.json({ accessToken, refreshToken });
+  // res.json({ accessToken, refreshToken });
+  res.redirect("/");
   // End Authorization
 };
 
