@@ -1,6 +1,8 @@
 const md5 = require("md5");
 const User = require("../../models/user.model");
 const jwt = require("jsonwebtoken");
+const generateHelper = require("../../helpers/generate");
+const ForgotPassword = require("../../models/forgot-password.model");
 
 // [GET] /
 module.exports.index = async (req, res) => {
@@ -72,16 +74,16 @@ module.exports.loginPost = async (req, res) => {
   // Authorization
   const data = user._id;
   const accessToken = jwt.sign({ data }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '10s',
+    expiresIn: "24h",
   });
   const refreshToken = jwt.sign({ data }, process.env.REFRESH_TOKEN_SECRET);
   await User.findOneAndUpdate(
-    { email: req.body.email }, 
+    { email: req.body.email },
     { $push: { refreshTokens: refreshToken } }
   );
   res.cookie("tokenUser", user.tokenUser);
-  res.cookie('accessToken', accessToken, { httpOnly: true, secure: true });
-  res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
+  res.cookie("accessToken", accessToken, { httpOnly: true, secure: true });
+  res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
   // res.json({ accessToken, refreshToken });
   res.redirect("/");
   // End Authorization
@@ -92,27 +94,100 @@ module.exports.refreshToken = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 
   const user = await User.findOne({
-    tokenUser: req.cookies.tokenUser
-  })
-  
+    tokenUser: req.cookies.tokenUser,
+  });
+
   await User.findOneAndUpdate(
-    { tokenUser: req.cookies.tokenUser }, 
+    { tokenUser: req.cookies.tokenUser },
     { $push: { refreshTokens: refreshToken } }
   );
 
   if (!refreshToken) return res.sendStatus(401);
   const refreshTokens = user.refreshTokens;
   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
-  else console.log("Available in list")
+  else console.log("Available in list");
 
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, data) => {
     console.log(err, data);
     if (err) return res.sendStatus(403);
     const dataNew = user._id;
     const accessToken = jwt.sign({ dataNew }, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: '10s',
+      expiresIn: "24h",
     });
     res.cookie("accessToken", accessToken, { httpOnly: true });
-    res.json( {accessToken} );
+    res.json({ accessToken });
+  });
+};
+
+// Forgot Password
+// [GET] user/password/forgot
+module.exports.forgotPassword = async (req, res) => {
+  res.render("client/pages/user/forgot-password", {
+    pageTitle: "Lấy lại mật khẩu",
+  });
+};
+
+// [POST] user/password/forgot
+module.exports.forgotPasswordPost = async (req, res) => {
+  const email = req.body.email;
+  const user = User.findOne({
+    email: email,
+    deleted: false
+  })
+  if (!user) {
+    req.flash("error", "Email không tồn tại!");
+    res.redirect("back");
+    return;
+  }
+
+  const otp = generateHelper.generateRandomNumber(6);
+  // Task 1: Save info into database
+  const objectForgotPassword = {
+    email: email, 
+    otp: otp,
+    expireAt: Date.now()
+  }
+
+  const record = new ForgotPassword(objectForgotPassword);
+  await record.save();
+
+  // Task 2
+  res.redirect(`/user/password/otp?email=${email}`);
+};
+// End Forgot Password
+
+// [GET] /user/password/otp
+module.exports.otpPassword = async (req, res) => {
+  email = req.query.email;
+  res.render("client/pages/user/otp-password", {
+      pageTitle: "Nhập mã OTP",
+      email: email
   })
 }
+
+// [POST] /user/password/otp
+module.exports.otpPasswordPost = async (req, res) => {
+  const email = req.body.email;
+  const otp = req.body.otp;
+
+  const find = {
+    email: email,
+    otp: otp
+  }
+
+  const result = await ForgotPassword.findOne(find);
+
+  if (!result) {
+    req.flash("error", "OTP không hợp lệ!");
+    res.redirect("back");
+    return;
+  }
+
+  const user = await User.findOne({
+    email: email
+  })
+
+  res.redirect("/user/password/reset");
+}
+
+

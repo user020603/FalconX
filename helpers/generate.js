@@ -19,5 +19,4 @@ module.exports.generateRandomString = (length) => {
     }
     return result;
   };
-  
-  
+

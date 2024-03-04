@@ -19,3 +19,13 @@ module.exports.registerPost = (req, res, next) => {
 
     next();
   };
+
+module.exports.forgotPasswordPost = (req, res, next) => {
+  if (!req.body.email) {
+    req.flash("error", `Email không được để trống!`);
+    res.redirect("back");
+    return;
+  }
+
+  next();
+};
