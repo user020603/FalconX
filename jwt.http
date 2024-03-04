@@ -1,11 +1,6 @@
 POST http://localhost:2908/user/login
 Content-Type: application/json
 
-{
-    "email": "ptit.tienthanh@gmail.com",
-    "password": "thanhroger"
-}
-
 ###
 GET http://localhost:2908
 
