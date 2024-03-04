@@ -3,6 +3,7 @@ const User = require("../../models/user.model");
 const jwt = require("jsonwebtoken");
 const generateHelper = require("../../helpers/generate");
 const ForgotPassword = require("../../models/forgot-password.model");
+const sendMailHelper = require("../../helpers/sendMail");
 
 // [GET] /
 module.exports.index = async (req, res) => {
@@ -152,6 +153,10 @@ module.exports.forgotPasswordPost = async (req, res) => {
   await record.save();
 
   // Task 2
+  const subject = `OTP take back your password`;
+  const gifUrl = `https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3o3YTkxNDN2azB0aWcxM3lqYnEydDhmMDVma3cwanNiMGczZWJxaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IgLIVXrBcID9cExa6r/giphy.gif`
+  const content = `Your OTP is <b>${otp}</b>. Please don't share for anybody :)<br><br><img src="${gifUrl}" alt="Your GIF">`;
+  sendMailHelper.sendMail(email, subject, content);
   res.redirect(`/user/password/otp?email=${email}`);
 };
 // End Forgot Password
@@ -188,6 +193,30 @@ module.exports.otpPasswordPost = async (req, res) => {
   })
 
   res.redirect("/user/password/reset");
+}
+
+// [GET] /user/password/reset
+module.exports.resetPassword = async (req, res) => {
+  res.render("client/pages/user/reset-password", {
+    pageTitle: "Đổi mật khẩu",
+  });
+}
+
+// [POST] /user/password/reset
+module.exports.resetPasswordPost = async (req, res) => {
+  const password = req.body.password;
+  const tokenUser = req.cookies.tokenUser;
+
+  try {
+    await User.updateOne({
+      tokenUser: tokenUser
+    }, {
+      password: md5(password)
+    });
+    res.redirect("/user/login");
+  } catch (e) {
+    res.redirect("/user/login");
+  }
 }
 
 
