@@ -86,11 +86,12 @@ module.exports.loginPost = async (req, res) => {
   res.cookie("accessToken", accessToken, { httpOnly: true, secure: true });
   res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
   // res.json({ accessToken, refreshToken });
+  req.flash("success", "Đăng nhập thành công!")
   res.redirect("/");
   // End Authorization
 };
 
-// [POST] /refreshToken
+// [GET] /refreshToken
 module.exports.refreshToken = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 
@@ -218,5 +219,13 @@ module.exports.resetPasswordPost = async (req, res) => {
     res.redirect("/user/login");
   }
 }
+
+// [GET] /user/logout
+module.exports.logout = async (req, res) => {
+  res.clearCookie("tokenUser");
+  res.clearCookie("accessToken");
+  res.redirect("/user/login");
+}
+
 
 

@@ -1,7 +1,15 @@
 extends ../../layouts/default.pug
-//- include ../../mixins/alert.pug
+include ../../mixins/alert.pug
 
 block main
-  //- +alert-success(5000)
-  h1 Homepage
+  +alert-success(5000)
+  section.hero.is-primary
+    .hero-body
+      .container
+        br
+        h1.title Welcome to Our Homepage!
+        br
+        h2.subtitle We're glad you're here.
+        br
+  
 

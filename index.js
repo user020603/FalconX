@@ -8,6 +8,8 @@ app.use(bodyParser.urlencoded({ extends: false }));
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const http = require('http');
+const { Server } = require("socket.io");
 
 // Flash
 app.use(cookieParser("02062003"));
@@ -24,6 +26,13 @@ database.connect();
 const port = process.env.PORT;
 const route = require("./routes/client/index.route");
 
+// SocketIO
+const server = http.createServer(app);
+const io = new Server(server);
+
+global._io = io;
+// End SocketIO
+
 // Setup view
 app.set("views", "./views");
 app.set("view engine", "pug");
@@ -36,7 +45,7 @@ app.post("/refreshToken", (req, res) => {
   res.json(req.body);
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log("Connected Success!");
   console.log(`App listening on port ${port}`);
 });

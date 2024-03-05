@@ -5,4 +5,13 @@ header.header
         .inner-logo
           a(href="/")
             img(src="https://cryptovevo.com/wp-content/uploads/2021/03/FalconX-990x329.png", alt="Logo")
-        
+      if (!user)
+        li
+          a(href="/user/register") Đăng ký
+        li
+          a(href="/user/login") Đăng nhập
+      else 
+        li
+          a(href="/user/logout") Đăng xuất  
+        li 
+          a(href="chat") Messenger
