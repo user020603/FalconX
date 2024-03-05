@@ -1,5 +1,6 @@
 /* Header */
 .header {
+  font-family: system-ui;
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
 }
@@ -32,6 +33,7 @@ body {
 }
 
 .footer {
+  font-family: system-ui;
   background: #333;
   color: #fff;
   text-align: center;
@@ -79,6 +81,7 @@ body {
 
 /* chat */
 .chat {
+  font-family: system-ui;
   width: 100%;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -172,3 +175,14 @@ body {
   opacity: 1;
 }
 /* End emoji-picker */
+
+.container a {
+  font-size: 18px; 
+  margin-left: 10px;
+  color: #2B2056;
+}
+
+#forgot-password {
+  font-size: 18px;
+  color: #2B2056
+}

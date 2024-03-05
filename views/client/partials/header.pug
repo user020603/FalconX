@@ -5,13 +5,12 @@ header.header
         .inner-logo
           a(href="/")
             img(src="https://cryptovevo.com/wp-content/uploads/2021/03/FalconX-990x329.png", alt="Logo")
-      if (!user)
-        li
-          a(href="/user/register") Đăng ký
-        li
-          a(href="/user/login") Đăng nhập
-      else 
-        li
-          a(href="/user/logout") Đăng xuất  
-        li 
-          a(href="chat") Messenger
+      .col-3
+      .col-3
+      .col-3
+        if (!user)
+          a(href="/user/register") <i class="fa-regular fa-registered"></i> Đăng ký
+          a(href="/user/login") <i class="fa-solid fa-right-to-bracket"></i> Đăng nhập
+        else 
+          a(href="/user/logout") <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất
+          a(href="chat") <i class="fa-brands fa-facebook-messenger"></i> Messenger
