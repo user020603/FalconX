@@ -1,5 +1,12 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js';
 
+// Upload Image
+const upload = new FileUploadWithPreview.FileUploadWithPreview('upload-images', {
+  multiple: true,
+  maxFileCount: 6
+});
+// End Upload Image
+
 // CLIENT_SEND_MESSAGE
 const formSendData = document.querySelector(".chat .inner-form");
 if(formSendData) {
@@ -7,10 +14,15 @@ if(formSendData) {
   formSendData.addEventListener("submit", (event) => {
     event.preventDefault();
     const content = inputContent.value;
-    if(content) {
-      socket.emit("CLIENT_SEND_MESSAGE", content);
+    const images = upload.cachedFileArray || [];
+    if(content || images.length > 0) {
+      socket.emit("CLIENT_SEND_MESSAGE", {
+        content: content,
+        images: images
+      });
       inputContent.value = "";
       socket.emit("CLIENT_SEND_TYPING", "hidden");
+      upload.resetPreviewPanel();
     }
   });
 }
@@ -36,6 +48,8 @@ socket.on("SERVER_SEND_MESSAGE", (data) => {
 
   const div = document.createElement("div");
   let htmlFullName = "";
+  let htmlContent = "";
+  let htmlImages = "";
 
   if(myId != data.userId) {
     div.classList.add("inner-incoming");
@@ -44,9 +58,28 @@ socket.on("SERVER_SEND_MESSAGE", (data) => {
     div.classList.add("inner-outgoing");
   }
 
+  if(data.content) {
+    htmlContent = `
+      <div class="inner-content">${data.content}</div>
+    `;
+  }
+
+  if(data.images.length > 0) {
+    htmlImages += `<div class="inner-images">`;
+
+    for (const image of data.images) {
+      htmlImages += `
+        <img src="${image}">
+      `;
+    }
+
+    htmlImages += `</div>`;
+  }
+
   div.innerHTML = `
     ${htmlFullName}
-    <div class="inner-content">${data.content}</div>
+    ${htmlContent}
+    ${htmlImages}
   `;
 
   body.insertBefore(div, elementListTyping);

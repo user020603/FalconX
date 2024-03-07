@@ -75,7 +75,7 @@ module.exports.loginPost = async (req, res) => {
   // Authorization
   const data = user._id;
   const accessToken = jwt.sign({ data }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "24h",
+    expiresIn: "1m",
   });
   const refreshToken = jwt.sign({ data }, process.env.REFRESH_TOKEN_SECRET);
   await User.findOneAndUpdate(
