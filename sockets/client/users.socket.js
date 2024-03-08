@@ -42,5 +42,33 @@ module.exports = (res) => {
         );
       }
     });
+
+    // Khi A huy gui yeu cau cho B
+    socket.on("CLIENT_CANCEL_FRIEND", async (userIdB) => {
+      const userIdA = res.locals.user.id;
+
+      console.log(userIdA);
+      console.log(userIdB);
+
+      // Xoa id cua A trong acceptFriends cua B
+      await User.updateOne(
+        {
+          _id: userIdB,
+        },
+        {
+          $pull: { acceptFriends: userIdA },
+        }
+      );
+
+      // Xoa id cua B trong requestFriend cua A
+      await User.updateOne(
+        {
+          _id: userIdA,
+        },
+        {
+          $pull: { requestFriends: userIdB },
+        }
+      );
+    });
   });
 };
