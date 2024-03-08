@@ -1,0 +1,46 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3
+
+    include ../../partials/list-btn-users.pug
+    br
+    .row
+      .col-12
+        +box-head("Lời mời kết bạn")
+    br
+    .row
+      each user in users
+        .col-6
+          div(class="box-user")
+            div(class="inner-avatar")
+              img(
+                src="https://robohash.org/hicveldicta.png"
+                alt=user.fullName
+              )
+            div(class="inner-info")
+              div(class="inner-name") #{user.fullName}
+              div(class="inner-buttons")
+                button(
+                  class="btn btn-sm btn-success mr-1"
+                  btn-accept-friend=user.id
+                ) Accept
+                button(
+                  class="btn btn-sm btn-danger mr-1"
+                  btn-refuse-friend=user.id
+                ) Remove
+                button(
+                  class="btn btn-sm btn-danger mr-1"
+                  btn-deleted-friend
+                  disabled
+                ) Removed
+                button(
+                  class="btn btn-sm btn-success mr-1"
+                  btn-accepted-friend
+                  disabled
+                ) Accepted
+
+
+block script
+  script( src="/js/users.js")

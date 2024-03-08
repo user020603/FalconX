@@ -8,12 +8,12 @@ block main
     br
     .row
       .col-12
-        +box-head("Sent request")
+        +box-head("List friends")
     br
     .row
       each user in users
         .col-6
-          div(class="box-user add")
+          div(class="box-user")
             div(class="inner-avatar")
               img(
                 src="https://robohash.org/hicveldicta.png"
@@ -24,12 +24,7 @@ block main
               div(class="inner-buttons")
                 button(
                   class="btn btn-sm btn-primary mr-1"
-                  btn-add-friend=user.id
-                ) Add friend
-                button(
-                  class="btn btn-sm btn-secondary mr-1"
-                  btn-cancel-friend=user.id
-                ) Cancel
+                ) Message
 
 
 block script
