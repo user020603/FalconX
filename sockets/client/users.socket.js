@@ -44,14 +44,14 @@ module.exports = (res) => {
 
       // Lấy độ dài acceptFriends của B để trả về cho B
       const infoUserB = await User.findOne({
-        _id: userIdB
+        _id: userIdB,
       }).select("acceptFriends");
 
       const lengthAcceptFriendsB = infoUserB.acceptFriends.length;
 
       socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
         userId: userIdB,
-        lengthAcceptFriends: lengthAcceptFriendsB
+        lengthAcceptFriends: lengthAcceptFriendsB,
       });
     });
 
@@ -81,6 +81,18 @@ module.exports = (res) => {
           $pull: { requestFriends: userIdB },
         }
       );
+
+      // Lay do dai acceptFriend cua B de tra ve cho B
+      const infoUserB = await User.findOne({
+        _id: userIdB,
+      }).select("acceptFriends");
+
+      const lengthAcceptFriendsB = infoUserB.acceptFriends.length;
+
+      socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+        userId: userIdB,
+        lengthAcceptFriends: lengthAcceptFriendsB,
+      });
     });
 
     // Khi B tu choi ket ban cua A

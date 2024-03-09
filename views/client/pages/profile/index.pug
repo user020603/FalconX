@@ -1,7 +1,7 @@
 extends ../../layouts/default.pug
 
 block main
-    .container.my-3
+    .container.my-5
         .row.justify-content-center
             .col-12.col-md-8
                 .card
@@ -17,3 +17,4 @@ block main
                             // Add more fields as needed
                     .card-footer.text-muted
                         p Created at: #{new Date(user.createdAt).toLocaleString()}
+    link(rel="stylesheet", href="/css/profile.css")
