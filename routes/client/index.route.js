@@ -2,6 +2,7 @@ const homeRoutes = require("./home.route");
 const userRoutes = require("./user.route");
 const chatRoutes = require("./chat.route");
 const usersRoutes = require("./users.route.js");
+const profileRoutes = require("./profile.route.js");
 const userMiddleware = require("../../middlewares/client/user.middleware.js");
 const authTokenMiddleware = require("../../middlewares/client/authenToken.middleware.js");
 
@@ -11,4 +12,5 @@ module.exports = (app) => {
     app.use("/user", userRoutes);
     app.use("/chat", authTokenMiddleware.authenToken, chatRoutes);
     app.use("/users", authTokenMiddleware.authenToken, usersRoutes);
+    app.use("/my-profile", authTokenMiddleware.authenToken, profileRoutes);
 }

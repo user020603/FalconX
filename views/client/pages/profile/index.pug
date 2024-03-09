@@ -1,0 +1,19 @@
+extends ../../layouts/default.pug
+
+block main
+    .container.my-3
+        .row.justify-content-center
+            .col-12.col-md-8
+                .card
+                    .card-header
+                        h1.title Profile
+                    .card-body
+                        h2.subtitle Welcome, #{user.fullName}
+                        br
+                        p Here is your profile information:
+                        ul.list-group.list-group-flush
+                            li.list-group-item <strong>Full Name:</strong> #{user.fullName}
+                            li.list-group-item <strong>Email:</strong> #{user.email}
+                            // Add more fields as needed
+                    .card-footer.text-muted
+                        p Created at: #{new Date(user.createdAt).toLocaleString()}
