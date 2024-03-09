@@ -78,7 +78,7 @@ module.exports.friends = async (req, res) => {
     _id: { $in: friendsListId },
     status: "active",
     deleted: false
-  }).select("id fullName avatar");
+  }).select("id fullName avatar statusOnline");
 
   // console.log(users);
 

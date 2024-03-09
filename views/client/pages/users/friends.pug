@@ -10,9 +10,9 @@ block main
       .col-12
         +box-head("List friends")
     br
-    .row
+    .row(data-users-friend)
       each user in users
-        .col-6
+        .col-6(user-id=user.id)
           div(class="box-user")
             div(class="inner-avatar")
               img(
@@ -25,6 +25,10 @@ block main
                 button(
                   class="btn btn-sm btn-primary mr-1"
                 ) Message
+            div(
+              class="inner-status"
+              status=user.statusOnline
+            ) <i class="fa-solid fa-circle"></i>
 
 
 block script

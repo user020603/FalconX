@@ -87,6 +87,20 @@ module.exports.loginPost = async (req, res) => {
   res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: true });
   // res.json({ accessToken, refreshToken });
   req.flash("success", "Login Success!");
+
+  await User.updateOne({
+    _id: user.id
+  }, {
+    statusOnline: "online"
+  });
+
+  _io.once("connection", (socket) => {
+    socket.broadcast.emit("SERVER_RETURN_USER_STATUS", {
+      userId: user.id,
+      status: "online"
+    })
+  })
+
   res.redirect("/");
   // End Authorization
 };
@@ -225,6 +239,19 @@ module.exports.resetPasswordPost = async (req, res) => {
 
 // [GET] /user/logout
 module.exports.logout = async (req, res) => {
+  const userId = res.locals.user.id;
+  await User.updateOne({
+    _id: userId
+  }, {
+    statusOnline: "offline"
+  });
+
+  _io.once("connection", (socket) => {
+    socket.broadcast.emit("SERVER_RETURN_USER_STATUS", {
+      userId: userId,
+      status: "offline"
+    })
+  })
   res.clearCookie("tokenUser");
   res.clearCookie("accessToken");
   res.redirect("/user/login");

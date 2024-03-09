@@ -56,7 +56,9 @@ if (listBtnAcceptFriend.length > 0) {
 
 // SERVER_RETURN_LENGTH_ACCEPT_FRIEND
 socket.on("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", (data) => {
-  const badgeUsersAccept = document.querySelector(`[badge-users-accept="${data.userId}"]`);
+  const badgeUsersAccept = document.querySelector(
+    `[badge-users-accept="${data.userId}"]`
+  );
   if (badgeUsersAccept) {
     badgeUsersAccept.innerHTML = data.lengthAcceptFriends;
   }
@@ -65,7 +67,9 @@ socket.on("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", (data) => {
 
 // SERVER_RETURN_INFO_ACCEPT_FRIEND
 socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
-  const dataUsersAccept = document.querySelector(`[data-users-accept="${data.userIdB}"]`);
+  const dataUsersAccept = document.querySelector(
+    `[data-users-accept="${data.userIdB}"]`
+  );
   if (dataUsersAccept) {
     const newBoxUser = document.createElement("div");
     newBoxUser.classList.add("col-6");
@@ -113,7 +117,6 @@ socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
     `;
     dataUsersAccept.appendChild(newBoxUser);
 
-
     // Xoa loi moi ket ban cho div moi
     const buttonRefuse = newBoxUser.querySelector("[btn-refuse-friend]");
     buttonRefuse.addEventListener("click", () => {
@@ -128,26 +131,47 @@ socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
       buttonAccept.closest(".box-user").classList.add("accept");
       const userId = buttonAccept.getAttribute("btn-accept-friend");
       socket.emit("CLIENT_ACCEPT_FRIEND", userId);
-    })
+    });
 
     // Khi A gui ket ban cho B, danh sach nguoi dung cua B xoa di A
-    const dataUsersNotFriend = document.querySelector(`[data-users-not-friend="${data.userIdB}"]`);
-    if(dataUsersNotFriend) {
-      const boxUserDelete = dataUsersNotFriend.querySelector(`[user-id="${data.infoUserA._id}"]`);
+    const dataUsersNotFriend = document.querySelector(
+      `[data-users-not-friend="${data.userIdB}"]`
+    );
+    if (dataUsersNotFriend) {
+      const boxUserDelete = dataUsersNotFriend.querySelector(
+        `[user-id="${data.infoUserA._id}"]`
+      );
       dataUsersNotFriend.removeChild(boxUserDelete);
     }
   }
-})
+});
 // End SERVER_RETURN_INFO_ACCEPT_FRIEND
 
 // SERVER_RETURN_ID_CANCEL_FRIEND
 socket.on("SERVER_RETURN_ID_CANCEL_FRIEND", (data) => {
-  const dataUsersAccept = document.querySelector(`[data-users-accept="${data.userIdB}"]`);
+  const dataUsersAccept = document.querySelector(
+    `[data-users-accept="${data.userIdB}"]`
+  );
   if (dataUsersAccept) {
-    const boxUserA = dataUsersAccept.querySelector(`[user-id="${data.userIdA}"]`);
+    const boxUserA = dataUsersAccept.querySelector(
+      `[user-id="${data.userIdA}"]`
+    );
     if (boxUserA) {
       dataUsersAccept.removeChild(boxUserA);
     }
   }
-})
+});
 // End SERVER_RETURN_ID_CANCEL_FRIEND
+
+// SERVER_RETURN_USER_STATUS
+socket.on("SERVER_RETURN_USER_STATUS", (data) => {
+  const dataUsersFriend = document.querySelector("[data-users-friend]");
+  if (dataUsersFriend) {
+    const boxUser = dataUsersFriend.querySelector(`[user-id="${data.userId}"]`);
+    if (boxUser) {
+      const boxStatus = boxUser.querySelector("[status]");
+      boxStatus.setAttribute("status", data.status);
+    }
+  }
+});
+// End SERVER_RETURN_USER_STATUS
