@@ -129,6 +129,13 @@ socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
       const userId = buttonAccept.getAttribute("btn-accept-friend");
       socket.emit("CLIENT_ACCEPT_FRIEND", userId);
     })
+
+    // Khi A gui ket ban cho B, danh sach nguoi dung cua B xoa di A
+    const dataUsersNotFriend = document.querySelector(`[data-users-not-friend="${data.userIdB}"]`);
+    if(dataUsersNotFriend) {
+      const boxUserDelete = dataUsersNotFriend.querySelector(`[user-id="${data.infoUserA._id}"]`);
+      dataUsersNotFriend.removeChild(boxUserDelete);
+    }
   }
 })
 // End SERVER_RETURN_INFO_ACCEPT_FRIEND
