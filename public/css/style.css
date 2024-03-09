@@ -372,11 +372,12 @@ a.btn.btn-info:hover {
 
 .box-user .inner-status {
   font-size: 12px;
-  color: #00d800;
-  opacity: 0;
+  color: gray;
+  opacity: 1;
 }
 
 .box-user .inner-status[status="online"] {
+  color: #00d800;
   opacity: 1;
 }
 /* End box-user */
