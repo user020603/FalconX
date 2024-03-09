@@ -16,3 +16,7 @@
       class="btn btn-info m-1"
       href="/users/accept"
     ) Request pending
+      span(
+        class="badge badge-warning ml-2"
+        badge-users-accept=user.id
+      ) #{user.acceptFriends.length}

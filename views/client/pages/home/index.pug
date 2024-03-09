@@ -2,6 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main
+  +alert-error(5000)
   +alert-success(5000)
   if (user)
     .container.my-3
@@ -10,9 +11,10 @@ block main
     .hero-body
       .container
         br
-        h1.title Welcome to Our Homepage!
+        h1.title Welcome to Our Custom Homepage!
         br
-        h2.subtitle We're glad you're here.
+        h2.subtitle Enjoy our new features.
         br
+        p We have added a lot of new features for you. Check them out!
   
 
