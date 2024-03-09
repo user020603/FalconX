@@ -103,6 +103,11 @@ module.exports = (res) => {
         userId: userIdB,
         lengthAcceptFriends: lengthAcceptFriendsB,
       });
+
+      socket.broadcast.emit("SERVER_RETURN_ID_CANCEL_FRIEND", {
+        userIdB: userIdB,
+        userIdA: userIdA
+      })
     });
 
     // Khi B tu choi ket ban cua A
