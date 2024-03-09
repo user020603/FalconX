@@ -53,6 +53,16 @@ module.exports = (res) => {
         userId: userIdB,
         lengthAcceptFriends: lengthAcceptFriendsB,
       });
+
+      // Lay thong tin cua A de tra ve cho B
+      const infoUserA = await User.findOne({
+        _id: userIdA
+      }).select("id fullName avatar")
+
+      socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT_FRIEND", {
+        userIdB: userIdB,
+        infoUserA: infoUserA
+      })
     });
 
     // Khi A huy gui yeu cau cho B
