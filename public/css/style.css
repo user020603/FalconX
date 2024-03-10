@@ -370,6 +370,11 @@ a.btn.btn-info:hover {
   display: inline-block;
 }
 
+.btn-message {
+  display: inline-block;
+  font-size: 14px !important;/* Adjust as needed */
+}
+
 .box-user.unfriended [btn-unfriend] {
   display: none;
 }

@@ -1,4 +1,5 @@
 const User = require("../../models/user.model");
+const RoomChat = require("../../models/rooms-chat.model");
 
 module.exports = (res) => {
   _io.once("connection", (socket) => {
@@ -108,34 +109,48 @@ module.exports = (res) => {
     socket.on("CLIENT_UNFRIEND", async (userIdB) => {
       const userIdA = res.locals.user.id;
 
-      await User.updateOne(
-        {
-          _id: userIdA,
-        },
-        {
-          $pull: {
-            friendsList: {
-              user_id: userIdB,
-              room_chat_id: "",
-            },
-          },
-        }
+      const infoUserB = await User.findOne({
+        _id: userIdB,
+      }).select("friendsList");
+
+      const infoUserA = res.locals.user;
+
+      const friendA = infoUserA.friendsList.find(
+        (friend) => friend.user_id.toString() === userIdB
+      );
+      const friendB = infoUserB.friendsList.find(
+        (friend) => friend.user_id.toString() === userIdA
       );
 
-      await User.updateOne(
-        {
-          _id: userIdB,
-        },
-        {
-          $pull: {
-            friendsList: {
-              user_id: userIdA,
-              room_chat_id: "",
-            },
+      if (friendA && friendB && friendA.room_chat_id === friendB.room_chat_id) {
+        await User.updateOne(
+          {
+            _id: userIdA,
           },
-        }
-      );
+          {
+            $pull: {
+              friendsList: {
+                user_id: userIdB,
+                room_chat_id: friendA.room_chat_id,
+              },
+            },
+          }
+        );
 
+        await User.updateOne(
+          {
+            _id: userIdB,
+          },
+          {
+            $pull: {
+              friendsList: {
+                user_id: userIdA,
+                room_chat_id: friendB.room_chat_id,
+              },
+            },
+          }
+        );
+      }
       // End Unfriend
 
       socket.broadcast.emit("SERVER_RETURN_UNFRIEND", {
@@ -148,6 +163,23 @@ module.exports = (res) => {
     socket.on("CLIENT_ACCEPT_FRIEND", async (userIdA) => {
       const userIdB = res.locals.user.id;
 
+      // Tao phong chat moi
+      const roomChat = new RoomChat({
+        typeRoom: "friend",
+        users: [
+          {
+            user_id: userIdA,
+            role: "superAdmin",
+          },
+          {
+            user_id: userIdB,
+            role: "superAdmin",
+          },
+        ],
+      });
+
+      await roomChat.save();
+
       // Thêm {user_id, room_chat_id} của A vào friendsList của B
       // Xóa id của A trong acceptFriends của B
       await User.updateOne(
@@ -158,7 +190,7 @@ module.exports = (res) => {
           $push: {
             friendsList: {
               user_id: userIdA,
-              room_chat_id: "",
+              room_chat_id: roomChat.id,
             },
           },
 
@@ -177,8 +209,7 @@ module.exports = (res) => {
           $push: {
             friendsList: {
               user_id: userIdB,
-
-              room_chat_id: "",
+              room_chat_id: roomChat.id,
             },
           },
 
