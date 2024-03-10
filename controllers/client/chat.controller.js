@@ -5,11 +5,14 @@ const chatSocket = require("../../sockets/client/chat.client");
 
 // [GET] /chat/:roomChatId
 module.exports.index = async (req, res) => {
-  chatSocket(res);
+  chatSocket(req, res);
   // End SocketIO
+
+  const roomChatId = req.params.roomChatId;
 
   // Lấy data từ database
   const chats = await Chat.find({
+    room_chat_id: roomChatId,
     deleted: false
   });
 

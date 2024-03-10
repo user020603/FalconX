@@ -1,15 +1,15 @@
 header.header
   .container
     .row.align-items-center
-      .col-7
+      .col-3
         .inner-logo
           a(href="/")
             img(src="https://cryptovevo.com/wp-content/uploads/2021/03/FalconX-990x329.png", alt="Logo")
       .col-5
+      .col-4
         if (!user)
           a(href="/user/register") <i class="fa-regular fa-registered"></i> Regist
           a(href="/user/login") <i class="fa-solid fa-right-to-bracket"></i> Log in
         else 
           a(href="/my-profile") <i class="fa-solid fa-user"></i>  #{user.fullName}
-          a(href="/chat") <i class="fa-brands fa-facebook-messenger"></i> Messenger
           a(href="/user/logout") <i class="fa-solid fa-arrow-right-from-bracket"></i> Log out
