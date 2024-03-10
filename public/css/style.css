@@ -370,6 +370,22 @@ a.btn.btn-info:hover {
   display: inline-block;
 }
 
+.box-user.unfriended [btn-unfriend] {
+  display: none;
+}
+
+.box-user.unfriended [btn-messenger] {
+  display: none;
+}
+
+.box-user [btn-unfriended] {
+  display: none;
+}
+
+.box-user.unfriended [btn-unfriended] {
+  display: inline-block;
+}
+
 .box-user .inner-status {
   font-size: 12px;
   color: gray;

@@ -89,27 +89,27 @@ socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
             class="btn btn-sm btn-primary mr-1"
             btn-accept-friend="${data.infoUserA._id}"
           >
-            Chấp nhận
+            Accept
           </button>
           <button
             class="btn btn-sm btn-secondary mr-1"
             btn-refuse-friend="${data.infoUserA._id}"
           >
-            Xóa
+            Remove
           </button>
           <button
             class="btn btn-sm btn-secondary mr-1"
             btn-deleted-friend=""
             disabled=""
           >
-            Đã xóa
+            Removed
           </button>
           <button
             class="btn btn-sm btn-primary mr-1"
             btn-accepted-friend=""
             disabled=""
           >
-            Đã chấp nhận
+            Accepted
           </button>
         </div>
     </div>
@@ -175,3 +175,37 @@ socket.on("SERVER_RETURN_USER_STATUS", (data) => {
   }
 });
 // End SERVER_RETURN_USER_STATUS
+
+// Unfriend
+const listBtnUnfriend = document.querySelectorAll("[btn-unfriend]");
+if (listBtnUnfriend.length > 0) {
+  listBtnUnfriend.forEach((button) => {
+    button.addEventListener("click", () => {
+      const userId = button.getAttribute("btn-unfriend");
+      swal("Unfriend?").then((value) => {
+        if (value) {
+          button.closest(".box-user").classList.add("unfriended");
+          socket.emit("CLIENT_UNFRIEND", userId);
+        } else return;
+      });
+    });
+  });
+}
+// End Unfriend
+
+// SERVER_RETURN_UNFRIEND
+socket.on("SERVER_RETURN_UNFRIEND", (data) => {
+  console.log("Hello from server return");
+  const dataUsersFriend = document.querySelector(
+    `[data-users-friend="${data.userIdA}"]`
+  );
+  if (dataUsersFriend) {
+    const boxUser = dataUsersFriend.querySelector(
+      `[user-id="${data.userIdB}"]`
+    );
+    if (boxUser) {
+      dataUsersFriend.removeChild(boxUser);
+    }
+  }
+});
+// End SERVER_RETURN_UNFRIEND

@@ -73,6 +73,10 @@ module.exports.accept = async (req, res) => {
 // [GET] /users/friends
 module.exports.friends = async (req, res) => {
   const friendsListId = res.locals.user.friendsList.map(item => item.user_id);
+
+    // SocketIO
+    usersSocket(res);
+    // End SocketIO
   
   const users = await User.find({
     _id: { $in: friendsListId },

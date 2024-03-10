@@ -24,7 +24,17 @@ block main
               div(class="inner-buttons")
                 button(
                   class="btn btn-sm btn-primary mr-1"
+                  btn-messenger
                 ) Message
+                button(
+                  class="btn btn-sm btn-danger mr-1"
+                  btn-unfriend=user.id
+                ) Unfriend
+                button(
+                  class="btn btn-sm btn-danger mr-1"
+                  btn-unfriended
+                  disabled
+                ) Unfriended
             div(
               class="inner-status"
               status=user.statusOnline
