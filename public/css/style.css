@@ -95,7 +95,7 @@ body {
 }
 
 .chat .inner-head .inner-avatar {
-  background: #2B2056;
+  background: #2b2056;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -123,7 +123,7 @@ body {
 }
 
 .chat .inner-body .inner-content {
-  background: #F1F1F1;
+  background: #f1f1f1;
   margin-bottom: 10px;
   max-width: 220px;
   padding: 5px 10px;
@@ -133,7 +133,7 @@ body {
 
 .chat .inner-outgoing .inner-content {
   margin-left: auto;
-  background: #2B2056;
+  background: #2b2056;
   color: #fff;
 }
 
@@ -158,8 +158,8 @@ body {
 
 .chat .inner-form button {
   border-radius: 15px;
-  border: 1px solid #2B2056;
-  background: #2B2056;
+  border: 1px solid #2b2056;
+  background: #2b2056;
   color: #fff;
   height: 32px;
   padding: 0 10px;
@@ -221,14 +221,14 @@ body {
 /* End emoji-picker */
 
 .container a {
-  font-size: 18px; 
+  font-size: 18px;
   margin-left: 10px;
-  color: #2B2056;
+  color: #2b2056;
 }
 
 #forgot-password {
   font-size: 18px;
-  color: #2B2056
+  color: #2b2056;
 }
 
 /* box-typing */
@@ -269,18 +269,18 @@ body {
 @keyframes blink {
   0% {
     opacity: 0.1;
- }
+  }
   20% {
     opacity: 1;
- }
+  }
   100% {
     opacity: 0.1;
- }
+  }
 }
 /* End box-typing */
 
 a.btn.btn-info {
-  background-color: #2B2056 !important;
+  background-color: #2b2056 !important;
   border-color: beige !important;
   color: beige !important;
   transition: all 0.5s ease;
@@ -288,8 +288,8 @@ a.btn.btn-info {
 
 a.btn.btn-info:hover {
   background-color: beige !important;
-  border-color: #2B2056 !important;
-  color: #2B2056 !important;
+  border-color: #2b2056 !important;
+  color: #2b2056 !important;
 }
 
 /* box-user */
@@ -372,7 +372,7 @@ a.btn.btn-info:hover {
 
 .btn-message {
   display: inline-block;
-  font-size: 14px !important;/* Adjust as needed */
+  font-size: 14px !important; /* Adjust as needed */
 }
 
 .box-user.unfriended [btn-unfriend] {

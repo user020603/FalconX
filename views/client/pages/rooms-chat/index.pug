@@ -16,17 +16,18 @@ block main
         ) Create room chat
 
     .row
-      .col-6
-        div(class="box-room")
-          div(class="inner-avatar")
-            img(
-              src="https://robohash.org/hicveldicta.png"
-              alt="xyz"
-            )
-          div(class="inner-info")
-            div(class="inner-name") Room xyz
-            div(class="inner-buttons")
-              a(
-                href="#"
-                class="btn btn-sm btn-primary text-white mr-1"
-              ) Message
+      each room in listRoomChat
+        .col-6
+          div(class="box-room")
+            div(class="inner-avatar")
+              img(
+                src="https://robohash.org/hicveldicta.png"
+                alt=room.title
+              )
+            div(class="inner-info")
+              div(class="inner-name") #{room.title}
+              div(class="inner-buttons")
+                a(
+                  href=`/chat/${room.id}`
+                  class="btn btn-sm btn-primary text-white mr-1 btn-message"
+                ) Message

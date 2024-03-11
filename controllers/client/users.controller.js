@@ -11,7 +11,7 @@ module.exports.notFriend = async (req, res) => {
 
   const requestFriends = res.locals.user.requestFriends;
   const acceptFriends = res.locals.user.acceptFriends;
-  const friendsListId = res.locals.user.friendsList.map(item => item.user_id);
+  const friendsListId = res.locals.user.friendsList.map((item) => item.user_id);
 
   const users = await User.find({
     $and: [
@@ -73,20 +73,20 @@ module.exports.accept = async (req, res) => {
 // [GET] /users/friends
 module.exports.friends = async (req, res) => {
   const friendsList = res.locals.user.friendsList;
-  const friendsListId = friendsList.map(item => item.user_id);
+  const friendsListId = friendsList.map((item) => item.user_id);
 
   // SocketIO
   usersSocket(res);
   // End SocketIO
-  
+
   const users = await User.find({
     _id: { $in: friendsListId },
     status: "active",
-    deleted: false
+    deleted: false,
   }).select("id fullName avatar statusOnline");
 
   for (const user of users) {
-    const infoUser = friendsList.find(item => item.user_id == user.id);
+    const infoUser = friendsList.find((item) => item.user_id == user.id);
     user.roomChatId = infoUser.room_chat_id;
   }
 
@@ -94,6 +94,6 @@ module.exports.friends = async (req, res) => {
 
   res.render("client/pages/users/friends", {
     pageTitle: "List friends",
-    users: users
+    users: users,
   });
 };
