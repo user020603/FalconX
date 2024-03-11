@@ -88,18 +88,21 @@ module.exports.loginPost = async (req, res) => {
   // res.json({ accessToken, refreshToken });
   req.flash("success", "Login Success!");
 
-  await User.updateOne({
-    _id: user.id
-  }, {
-    statusOnline: "online"
-  });
+  await User.updateOne(
+    {
+      _id: user.id,
+    },
+    {
+      statusOnline: "online",
+    }
+  );
 
   _io.once("connection", (socket) => {
     socket.broadcast.emit("SERVER_RETURN_USER_STATUS", {
       userId: user.id,
-      status: "online"
-    })
-  })
+      status: "online",
+    });
+  });
 
   res.redirect("/");
   // End Authorization
@@ -240,19 +243,54 @@ module.exports.resetPasswordPost = async (req, res) => {
 // [GET] /user/logout
 module.exports.logout = async (req, res) => {
   const userId = res.locals.user.id;
-  await User.updateOne({
-    _id: userId
-  }, {
-    statusOnline: "offline"
-  });
+  await User.updateOne(
+    {
+      _id: userId,
+    },
+    {
+      statusOnline: "offline",
+    }
+  );
 
   _io.once("connection", (socket) => {
     socket.broadcast.emit("SERVER_RETURN_USER_STATUS", {
       userId: userId,
-      status: "offline"
-    })
-  })
+      status: "offline",
+    });
+  });
   res.clearCookie("tokenUser");
   res.clearCookie("accessToken");
   res.redirect("/user/login");
+};
+
+// [GET] /detail/:id
+module.exports.detail = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const infoUser = await User.findOne({
+      _id: userId,
+    });
+
+    // console.log(infoUser);
+
+    const friendsList = infoUser.friendsList;
+    const numberOfFriends = friendsList.length;
+    for (const friend of friendsList) {
+      const infoUser = await User.findOne({
+        _id: friend.user_id,
+      }).select("fullName");
+
+      friend.fullName = infoUser.fullName;
+      friend.user_id = infoUser.id;
+    }
+
+    res.render("client/pages/user/detail", {
+      pageTitle: "Detail",
+      infoFriend: infoUser,
+      friendsList: friendsList,
+      numberOfFriends: numberOfFriends
+    });
+  } catch (e) {
+    res.redirect("/");
+  }
 };

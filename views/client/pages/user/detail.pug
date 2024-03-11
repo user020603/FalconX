@@ -1,0 +1,27 @@
+extends ../../layouts/default.pug
+
+block main
+    .container.my-5
+        .row.justify-content-center
+            .col-12.col-md-8
+                .card
+                    .card-header
+                        h1.title Profile
+                    .card-body
+                        h2.subtitle #{infoFriend.fullName}
+                        br
+                        p Here is #{infoFriend.fullName} profile information:
+                        ul.list-group.item
+                            li.list-group-item <strong>Full Name:</strong> #{infoFriend.fullName}
+                            li.list-group-item <strong>Email:</strong> #{infoFriend.email}
+                            li.list-group-item <strong>Status:</strong> #{infoFriend.status}
+                            li.list-group-item <strong>Number of Friends: </strong> #{numberOfFriends}
+                            each friend, index in friendsList
+                                //- li.list-group-item <strong>Friend:</strong> #{friend.user_id}
+                                li.list-group-item 
+                                    | #{index + 1}.
+                                    a(href=`/user/detail/${friend.user_id}`) #{friend.fullName}
+                            // Add more fields as needed
+                    .card-footer.text-muted
+                        p Created at: #{new Date(infoFriend.createdAt).toLocaleString()}
+    link(rel="stylesheet", href="/css/profile.css")

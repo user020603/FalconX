@@ -29,4 +29,6 @@ router.get("/password/reset", controller.resetPassword);
 
 router.post("/password/reset", userValidate.resetPasswordPost, controller.resetPasswordPost);
 
+router.get("/detail/:id", controller.detail);
+
 module.exports = router;
