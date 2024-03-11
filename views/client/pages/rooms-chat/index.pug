@@ -1,0 +1,32 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3
+    .row
+      .col-12
+        br
+        +box-head("List of rooms chat")
+        br
+    .row.mb-3
+      .col-12
+        a(
+          href="/rooms-chat/create"
+          class="btn btn-sm btn-success text-white mr-1"
+        ) Create room chat
+
+    .row
+      .col-6
+        div(class="box-room")
+          div(class="inner-avatar")
+            img(
+              src="https://robohash.org/hicveldicta.png"
+              alt="xyz"
+            )
+          div(class="inner-info")
+            div(class="inner-name") Room xyz
+            div(class="inner-buttons")
+              a(
+                href="#"
+                class="btn btn-sm btn-primary text-white mr-1"
+              ) Message
